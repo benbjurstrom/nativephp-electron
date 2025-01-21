@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Native\Electron\Concerns\LocatesPhpBinary;
+use Native\Electron\Concerns\LocatesPythonBinary;
 use Native\Electron\Facades\Updater;
 use Native\Electron\Traits\InstallsAppIcon;
 use Native\Electron\Traits\OsAndArch;
@@ -14,6 +15,7 @@ class BuildCommand extends Command
 {
     use InstallsAppIcon;
     use LocatesPhpBinary;
+    use LocatesPythonBinary;
     use OsAndArch;
 
     protected $signature = 'native:build
@@ -73,9 +75,16 @@ class BuildCommand extends Command
                 'APP_PATH' => base_path(),
                 'APP_URL' => config('app.url'),
                 'NATIVEPHP_BUILDING' => true,
+
+                // Existing PHP environment variables
                 'NATIVEPHP_PHP_BINARY_VERSION' => PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION,
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
                 'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
+
+                // New Python environment variables
+                'NATIVEPHP_PYTHON_BINARY_VERSION' => $this->pythonBinaryVersion(),
+                'NATIVEPHP_PYTHON_BINARY_PATH' => base_path($this->pythonBinaryPath()),
+
                 'NATIVEPHP_APP_NAME' => config('app.name'),
                 'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
                 'NATIVEPHP_APP_VERSION' => config('nativephp.version'),

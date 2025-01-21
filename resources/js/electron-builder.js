@@ -83,6 +83,7 @@ if (isBuilding) {
                     join(process.env.APP_PATH, 'vendor', 'nativephp', 'electron', 'resources'),
                     join(process.env.APP_PATH, 'node_modules'),
                     join(process.env.APP_PATH, 'dist'),
+                    join(process.env.APP_PATH, 'vendor', 'nativephp', 'python-bin'),
                 ];
 
                 let shouldSkip = false;
